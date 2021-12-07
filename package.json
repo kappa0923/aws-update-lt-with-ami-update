@@ -1,0 +1,11 @@
+{
+  "name": "aws-update-lt-with-ami-update",
+  "version": "0.0.1",
+  "description": "Update aws ec2 launch template with ami updated.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kappa0923",
+  "license": "MIT"
+}
