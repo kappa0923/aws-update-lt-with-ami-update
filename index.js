@@ -11,7 +11,7 @@ exports.handler = async (event, context) => {
     // Create a new launch template version with the new AMI ID
     let response = await ec2.createLaunchTemplateVersion({
         LaunchTemplateId: launchTemplateId,
-        SourceVersion: 'latest',
+        SourceVersion: '$Latest',
         LaunchTemplateData: {
             ImageId: imageId,
         },
@@ -20,11 +20,17 @@ exports.handler = async (event, context) => {
     // Get the last launch template version
     const latestVersion = response.LaunchTemplateVersion.VersionNumber
 
+    // Update the launch template to use the new version
+    response = await ec2.modifyLaunchTemplate({
+        LaunchTemplateId: launchTemplateId,
+        DefaultVersion: latestVersion.toString(),
+    }).promise();
+
     if (latestVersion > 1) {
         // Delete the previous launch template version
         response = await ec2.deleteLaunchTemplateVersions({
             LaunchTemplateId: launchTemplateId,
-            Versions: [latestVersion - 1],
+            Versions: [[latestVersion - 1].toString()],
         }).promise();
     }
 
